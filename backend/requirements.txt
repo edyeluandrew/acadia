@@ -1,0 +1,60 @@
+
+Django
+djangorestframework
+django-cors-headers
+
+# Database
+psycopg2-binary
+dj-database-url
+
+# Environment variables
+python-decouple
+
+# Image handling
+Pillow
+django-imagekit
+
+# Static files
+whitenoise
+
+# Security & Authentication
+django-recaptcha
+
+# API Documentation
+drf-yasg
+
+# Production server
+gunicorn
+
+# Utilities
+python-slugify
+pytz
+
+# Testing
+pytest
+pytest-django
+factory-boy
+
+# Code quality
+flake8
+black
+
+# Monitoring (optional)
+sentry-sdk
+
+# For handling environment variables in Django
+django-environ
+
+# JWT Authentication
+djangorestframework-simplejwt
+
+# Development utilities (optional)
+django-extensions
+
+# Celery for background tasks (optional)
+celery
+redis
+django-celery-beat
+django-celery-results
+
+
