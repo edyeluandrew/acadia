@@ -84,7 +84,7 @@ const AboutUs = () => {
           }`}>
             <div className="relative rounded-2xl overflow-hidden shadow-2xl h-96 bg-gradient-to-br from-espresso to-walnut p-8 flex flex-col justify-center">
               <img 
-                src="https://images.unsplash.com/photo-1571896349842-b46d0e7a0fbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 alt="Numba Hotel Kabale"
                 className="w-full h-full object-cover rounded-lg"
               />

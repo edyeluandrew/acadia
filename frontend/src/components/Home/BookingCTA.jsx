@@ -227,7 +227,7 @@ const BookingCTA = () => {
               </div>
               <p className="text-gray-400 text-sm mb-2">Call Us Anytime</p>
               <p className="text-2xl font-bold text-yellow-400 group-hover:text-yellow-300 transition-colors duration-300">
-                +256 757 004478
+                +256 xxx xxxxxxx
               </p>
             </div>
 

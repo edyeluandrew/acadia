@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "dev": "vite frontend",
-  "build": "vite build frontend",
+  "dev": "cd frontend && vite",
+  "build": "cd frontend && vite build",
   "lint": "eslint .",
-  "preview": "vite preview frontend"
+  "preview": "cd frontend && vite preview"
+}
 },
   "dependencies": {
     "framer-motion": "^12.23.24",
