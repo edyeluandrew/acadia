@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: hotel-numba-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn config.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        value: <YOUR_NEON_DB_URL>
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        value: hotel-numba.onrender.com
