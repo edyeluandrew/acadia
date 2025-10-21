@@ -1,14 +1,15 @@
+
 {
   "name": "acadia",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "dev": "vite frontend",
-  "build": "vite build frontend",
-  "lint": "eslint .",
-  "preview": "vite preview frontend"
-},
+    "dev": "cd frontend && vite",
+    "build": "cd frontend && vite build",
+    "lint": "eslint .",
+    "preview": "cd frontend && vite preview"
+  },
   "dependencies": {
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.545.0",
@@ -33,3 +34,11 @@
     "vite": "npm:rolldown-vite@7.1.14"
   }
 }
+
+
+
+
+
+
+
+
