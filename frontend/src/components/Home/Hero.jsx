@@ -12,12 +12,12 @@ const Hero = () => {
   const slides = [
     {
       image: image1,
-      title: "Welcome to Our Cafe",
+      title: "Welcome to Numba Cafe",
       subtitle: "Experience the finest coffee and warmest atmosphere"
     },
     {
       image: image2,
-      title: "Freshly Brewed Coffee",
+      title: "Poached Eggs Served on toast and Avocado",
       subtitle: "Handcrafted beverages made with love"
     },
     {
