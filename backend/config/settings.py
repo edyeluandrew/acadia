@@ -9,6 +9,9 @@ from pathlib import Path
 from decouple import config, Csv
 import dj_database_url
 from datetime import timedelta
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +42,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'django_extensions',
+    'cloudinary',
+    'cloudinary_storage',
     
     'rooms',
     'bookings',
@@ -129,6 +134,14 @@ TIME_ZONE = 'Africa/Kampala'
 USE_I18N = True
 USE_TZ = True
 
+# Cloudinary Configuration
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE= config('DEFAULT_FILE_STORAGE')
 
 
 # Static & Media Files

@@ -57,4 +57,5 @@ redis
 django-celery-beat
 django-celery-results
 
-
+cloudinary
+dj3-cloudinary-storage
