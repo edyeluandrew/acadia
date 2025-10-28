@@ -141,7 +141,7 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': config('CLOUDINARY_API_SECRET'),
 }
 
-DEFAULT_FILE_STORAGE= config('DEFAULT_FILE_STORAGE')
+DEFAULT_FILE_STORAGE= 'dj3_cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 # Static & Media Files
