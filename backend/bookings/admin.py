@@ -1,11 +1,18 @@
 
 
 
+
+
+
+
+
+
+
 from django.contrib import admin
 from django.utils.html import format_html
 from django.contrib import messages
 from .models import Booking
-from .tasks import send_booking_confirmation_email, send_cancellation_email
+from .emails import send_booking_confirmation_email, send_cancellation_email
 
 
 @admin.register(Booking)
@@ -70,14 +77,17 @@ class BookingAdmin(admin.ModelAdmin):
     
     def confirm_bookings(self, request, queryset):
         """Confirm selected pending bookings"""
+        from django.core.mail import send_mail
+        from django.conf import settings
+        
         success = 0
         for booking in queryset.filter(status='pending'):
             try:
                 booking.confirm()
                 success += 1
                 
-                # Send confirmation email to guest asynchronously
-                send_booking_confirmation_email.delay(booking.id)
+                # Send confirmation email to guest
+                self._send_guest_confirmation(booking)
                 
             except Exception as e:
                 self.message_user(
@@ -89,10 +99,64 @@ class BookingAdmin(admin.ModelAdmin):
         if success:
             self.message_user(
                 request, 
-                f"Confirmed {success} booking(s). Confirmation emails are being sent.", 
+                f"Confirmed {success} booking(s) and sent confirmation emails", 
                 messages.SUCCESS
             )
     confirm_bookings.short_description = "Confirm selected bookings"
+    
+    def _send_guest_confirmation(self, booking):
+        """Send booking confirmation email to guest"""
+        from django.core.mail import send_mail
+        from django.conf import settings
+        
+        subject = f'Booking Confirmed - {booking.room_type.name}'
+        
+        message = f"""
+Dear {booking.full_name},
+
+Your booking has been confirmed! We're excited to welcome you.
+
+Booking Confirmation Details:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Booking ID: #{booking.id}
+Room: {booking.room.number if booking.room else 'TBA'}
+Room Type: {booking.room_type.name}
+
+Check-in: {booking.check_in.strftime('%A, %B %d, %Y')}
+Check-out: {booking.check_out.strftime('%A, %B %d, %Y')}
+Number of Nights: {booking.nights}
+Number of Guests: {booking.guests}
+
+Total Amount: ${booking.total_price}
+
+{'Special Requests: ' + booking.special_requests if booking.special_requests else ''}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Important Information:
+- Check-in time: 3:00 PM
+- Check-out time: 11:00 AM
+- Please bring a valid ID for check-in
+
+If you have any questions, please contact us at {settings.DEFAULT_FROM_EMAIL}
+
+We look forward to hosting you!
+
+Best regards,
+Hotel Management Team
+"""
+        
+        try:
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[booking.email],
+                fail_silently=True,
+            )
+        except Exception as e:
+            print(f"Failed to send guest confirmation: {e}")
     
     def cancel_bookings(self, request, queryset):
         """Cancel selected bookings"""
@@ -101,10 +165,6 @@ class BookingAdmin(admin.ModelAdmin):
             try:
                 booking.cancel()
                 success += 1
-                
-                # Send cancellation email to guest asynchronously
-                send_cancellation_email.delay(booking.id)
-                
             except Exception as e:
                 self.message_user(
                     request, 
@@ -115,7 +175,7 @@ class BookingAdmin(admin.ModelAdmin):
         if success:
             self.message_user(
                 request, 
-                f"Cancelled {success} booking(s). Cancellation emails are being sent.", 
+                f"Cancelled {success} booking(s)", 
                 messages.SUCCESS
             )
     cancel_bookings.short_description = "Cancel selected bookings"
@@ -194,16 +254,11 @@ class BookingAdmin(admin.ModelAdmin):
 
 
 
-
-
-
-
-
 # from django.contrib import admin
 # from django.utils.html import format_html
 # from django.contrib import messages
 # from .models import Booking
-# from .emails import send_booking_confirmation_email, send_cancellation_email
+# from .tasks import send_booking_confirmation_email, send_cancellation_email
 
 
 # @admin.register(Booking)
@@ -268,17 +323,14 @@ class BookingAdmin(admin.ModelAdmin):
     
 #     def confirm_bookings(self, request, queryset):
 #         """Confirm selected pending bookings"""
-#         from django.core.mail import send_mail
-#         from django.conf import settings
-        
 #         success = 0
 #         for booking in queryset.filter(status='pending'):
 #             try:
 #                 booking.confirm()
 #                 success += 1
                 
-#                 # Send confirmation email to guest
-#                 self._send_guest_confirmation(booking)
+#                 # Send confirmation email to guest asynchronously
+#                 send_booking_confirmation_email.delay(booking.id)
                 
 #             except Exception as e:
 #                 self.message_user(
@@ -290,64 +342,10 @@ class BookingAdmin(admin.ModelAdmin):
 #         if success:
 #             self.message_user(
 #                 request, 
-#                 f"Confirmed {success} booking(s) and sent confirmation emails", 
+#                 f"Confirmed {success} booking(s). Confirmation emails are being sent.", 
 #                 messages.SUCCESS
 #             )
 #     confirm_bookings.short_description = "Confirm selected bookings"
-    
-#     def _send_guest_confirmation(self, booking):
-#         """Send booking confirmation email to guest"""
-#         from django.core.mail import send_mail
-#         from django.conf import settings
-        
-#         subject = f'Booking Confirmed - {booking.room_type.name}'
-        
-#         message = f"""
-# Dear {booking.full_name},
-
-# Your booking has been confirmed! We're excited to welcome you.
-
-# Booking Confirmation Details:
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-# Booking ID: #{booking.id}
-# Room: {booking.room.number if booking.room else 'TBA'}
-# Room Type: {booking.room_type.name}
-
-# Check-in: {booking.check_in.strftime('%A, %B %d, %Y')}
-# Check-out: {booking.check_out.strftime('%A, %B %d, %Y')}
-# Number of Nights: {booking.nights}
-# Number of Guests: {booking.guests}
-
-# Total Amount: ${booking.total_price}
-
-# {'Special Requests: ' + booking.special_requests if booking.special_requests else ''}
-
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-# Important Information:
-# - Check-in time: 3:00 PM
-# - Check-out time: 11:00 AM
-# - Please bring a valid ID for check-in
-
-# If you have any questions, please contact us at {settings.DEFAULT_FROM_EMAIL}
-
-# We look forward to hosting you!
-
-# Best regards,
-# Hotel Management Team
-# """
-        
-#         try:
-#             send_mail(
-#                 subject=subject,
-#                 message=message,
-#                 from_email=settings.DEFAULT_FROM_EMAIL,
-#                 recipient_list=[booking.email],
-#                 fail_silently=True,
-#             )
-#         except Exception as e:
-#             print(f"Failed to send guest confirmation: {e}")
     
 #     def cancel_bookings(self, request, queryset):
 #         """Cancel selected bookings"""
@@ -356,6 +354,10 @@ class BookingAdmin(admin.ModelAdmin):
 #             try:
 #                 booking.cancel()
 #                 success += 1
+                
+#                 # Send cancellation email to guest asynchronously
+#                 send_cancellation_email.delay(booking.id)
+                
 #             except Exception as e:
 #                 self.message_user(
 #                     request, 
@@ -366,7 +368,7 @@ class BookingAdmin(admin.ModelAdmin):
 #         if success:
 #             self.message_user(
 #                 request, 
-#                 f"Cancelled {success} booking(s)", 
+#                 f"Cancelled {success} booking(s). Cancellation emails are being sent.", 
 #                 messages.SUCCESS
 #             )
 #     cancel_bookings.short_description = "Cancel selected bookings"
@@ -421,6 +423,27 @@ class BookingAdmin(admin.ModelAdmin):
 #             'room', 
 #             'room_type'
 #         )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
