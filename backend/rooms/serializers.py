@@ -33,7 +33,8 @@ class RoomTypeSerializer(serializers.ModelSerializer):
             all_rooms = obj.rooms.filter(is_active=True)
             booked_room_ids = Booking.objects.filter(
                 room__room_type=obj,
-                status__in=[Booking.STATUS_CONFIRMED, Booking.STATUS_CHECKED_IN],
+                # status__in=[Booking.STATUS_CONFIRMED, Booking.STATUS_CHECKED_IN],
+                status__in=['confirmed', 'checked_in'],
                 check_in__lt=check_out_date,
                 check_out__gt=check_in_date
             ).values_list('room_id', flat=True)
@@ -81,7 +82,8 @@ class RoomSerializer(serializers.ModelSerializer):
             # Check if room has overlapping bookings
             has_booking = Booking.objects.filter(
                 room=obj,
-                status__in=[Booking.STATUS_CONFIRMED, Booking.STATUS_CHECKED_IN],
+                # status__in=[Booking.STATUS_CONFIRMED, Booking.STATUS_CHECKED_IN],
+                status__in=['confirmed', 'checked_in'],
                 check_in__lt=check_out_date,
                 check_out__gt=check_in_date
             ).exists()
