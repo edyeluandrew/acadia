@@ -1,11 +1,14 @@
+
+
 services:
+  # Web Service (Django API)
   - type: web
     name: hotel-numba-backend
     env: python
     region: oregon
     plan: free
     buildCommand: "./build.sh"
-    startCommand: "gunicorn config.wsgi:application"
+    startCommand: "gunicorn config.wsgi:application --timeout 120 --workers 2"
     envVars:
       - key: DATABASE_URL
         value: <YOUR_NEON_DB_URL>
@@ -14,4 +17,98 @@ services:
       - key: DEBUG
         value: False
       - key: ALLOWED_HOSTS
-        value: hotel-numba.onrender.com
+        value: hotel-nyumba.onrender.com
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: hotel-nyumba-redis
+          property: connectionString
+      - key: EMAIL_HOST
+        value: smtp.gmail.com
+      - key: EMAIL_PORT
+        value: 587
+      - key: EMAIL_USE_TLS
+        value: True
+      - key: EMAIL_HOST_USER
+        sync: false  # Add manually in dashboard
+      - key: EMAIL_HOST_PASSWORD
+        sync: false  # Add manually in dashboard
+      - key: DEFAULT_FROM_EMAIL
+        sync: false  # Add manually in dashboard
+      - key: ADMIN_EMAIL
+        sync: false  # Add manually in dashboard
+
+  # Celery Worker (Background Tasks)
+  - type: worker
+    name: hotel-nyumba-celery-worker
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "celery -A config worker --loglevel=info --concurrency=2"
+    envVars:
+      - key: DATABASE_URL
+        value: <YOUR_NEON_DB_URL>
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: hotel-nyumba-redis
+          property: connectionString
+      - key: EMAIL_HOST
+        value: smtp.gmail.com
+      - key: EMAIL_PORT
+        value: 587
+      - key: EMAIL_USE_TLS
+        value: True
+      - key: EMAIL_HOST_USER
+        sync: false  # Add manually in dashboard
+      - key: EMAIL_HOST_PASSWORD
+        sync: false  # Add manually in dashboard
+      - key: DEFAULT_FROM_EMAIL
+        sync: false  # Add manually in dashboard
+      - key: ADMIN_EMAIL
+        sync: false  # Add manually in dashboard
+
+  # Redis (Message Broker)
+  - type: redis
+    name: hotel-nyumba-redis
+    region: oregon
+    plan: free
+    maxmemoryPolicy: noeviction
+    ipAllowList: []
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# services:
+#   - type: web
+#     name: hotel-numba-backend
+#     env: python
+#     region: oregon
+#     plan: free
+#     buildCommand: "./build.sh"
+#     startCommand: "gunicorn config.wsgi:application"
+#     envVars:
+#       - key: DATABASE_URL
+#         value: <YOUR_NEON_DB_URL>
+#       - key: SECRET_KEY
+#         generateValue: true
+#       - key: DEBUG
+#         value: False
+#       - key: ALLOWED_HOSTS
+#         value: hotel-numba.onrender.com
