@@ -4,10 +4,11 @@ from .models import RoomType, Room
 
 class RoomTypeSerializer(serializers.ModelSerializer):
     available_rooms_count = serializers.SerializerMethodField()
+    image = serializers.ImageField(required=False, allow_null=True)
     
     class Meta:
         model = RoomType
-        fields = ['id', 'name', 'slug', 'describtion', 'base_price', 'capacity', 'available_rooms_count']
+        fields = ['id', 'name', 'slug', 'describtion', 'base_price', 'capacity', 'available_rooms_count', 'image']
     
     def get_available_rooms_count(self, obj):
         """Get count of available rooms for this type (for given dates if provided)"""

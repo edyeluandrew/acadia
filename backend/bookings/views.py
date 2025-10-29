@@ -139,9 +139,13 @@ class CheckAvailabilityView(APIView):
                 'available': available.exists(),
                 'available_count': available.count(),
                 'room_type': room_type.name,
+                'room_type_id': room_type.id,
                 'nights': nights,
                 'total_price': str(total_price),
-                'price_per_night': str(room_type.base_price)
+                'price_per_night': str(room_type.base_price),
+                'check_in': check_in_date.strftime('%Y-%m-%d'),
+                'check_out': check_out_date.strftime('%Y-%m-%d'),
+                
             })
             
         except RoomType.DoesNotExist:
