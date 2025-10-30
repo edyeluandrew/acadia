@@ -14,17 +14,22 @@ class BookingManager(models.Manager):
         """
         Get available rooms for a room type during the specified period.
         Returns a queryset of available Room objects.
-        """
-        from rooms.models import Room
         
-        # Find all bookings that overlap with the requested dates
+        IMPORTANT: Only looks at confirmed/checked-in bookings that have a room assigned.
+        Pending bookings are ignored since they don't have rooms assigned yet.
+        """
+        # Find all bookings that:
+        # 1. Are confirmed or checked in (not pending)
+        # 2. Have a room assigned (room is not null)
+        # 3. Overlap with the requested dates
         overlapping_bookings = self.filter(
-            room_type=room_type,
-            status__in=['confirmed', 'checked_in'],  # Only confirmed/active bookings
-            # Check for date overlap
+            status__in=['confirmed', 'checked_in'],  # Only active bookings
+            room__room_type=room_type,  # Filter by room type through the room relationship
+            room__isnull=False,  # Must have a room assigned
+            # Date overlap check: booking overlaps if check_in < requested check_out AND check_out > requested check_in
             check_in__lt=check_out,
             check_out__gt=check_in
-        ).values_list('room_id', flat=True)
+        ).values_list('room_id', flat=True).distinct()
         
         # Get all active rooms of this type that are NOT in overlapping bookings
         available_rooms = Room.objects.filter(
