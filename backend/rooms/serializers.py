@@ -8,7 +8,7 @@ class RoomTypeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = RoomType
-        fields = ['id', 'name', 'slug', 'describtion', 'base_price', 'capacity', 'available_rooms_count', 'image']
+        fields = ['id', 'name', 'slug', 'description', 'base_price', 'capacity', 'available_rooms_count', 'image']
     
     def get_available_rooms_count(self, obj):
         """Get count of available rooms for this type (for given dates if provided)"""

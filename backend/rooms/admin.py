@@ -4,14 +4,14 @@ from .models import RoomType, Room
 
 @admin.register(RoomType)
 class RoomTypeAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'slug', 'base_price', 'capacity', 'total_rooms']
+    list_display = ['id', 'name', 'slug', 'base_price', 'capacity', 'total_rooms', 'image_preview']
     search_fields = ['name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
     list_filter = ['capacity']
     
     fieldsets = (
         ('Basic Information', {
-            'fields': ('name', 'slug', 'describtion')
+            'fields': ('name', 'slug', 'description')
         }),
         ('Pricing & Capacity', {
             'fields': ('base_price', 'capacity')

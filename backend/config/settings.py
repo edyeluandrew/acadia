@@ -208,8 +208,8 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER)
 ADMIN_EMAIL = config('ADMIN_EMAIL', default=EMAIL_HOST_USER)
-BREVO_API_KEY = config("BREVO_API_KEY", default="")
-DEFAULT_FROM_NAME = 'Hotel Numba'
+# BREVO_API_KEY = config("BREVO_API_KEY", default="")
+# DEFAULT_FROM_NAME = 'Hotel Numba'
 
 # Fallback to console backend if email not configured
 if not EMAIL_HOST_USER:

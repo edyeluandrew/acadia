@@ -5,9 +5,9 @@ from django.core.mail.backends.base import BaseEmailBackend
 from django.conf import settings
 
 class BrevoEmailBackend(BaseEmailBackend):
-    """
-    Custom Django email backend to send emails via Brevo SMTP API.
-    """
+    
+    #Custom Django email backend to send emails via Brevo SMTP API.
+    
 
     def send_messages(self, email_messages):
         """

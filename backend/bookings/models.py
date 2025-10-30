@@ -11,18 +11,48 @@ class BookingManager(models.Manager):
     """Custom manager for booking queries"""
     
     def get_available_rooms(self, room_type, check_in, check_out):
-        """Get available rooms for given dates"""
-        booked_room_ids = self.filter(
-            room__room_type=room_type,
-            status__in=['confirmed', 'checked_in'],
+        """
+        Get available rooms for a room type during the specified period.
+        Returns a queryset of available Room objects.
+        """
+        from rooms.models import Room
+        
+        # Find all bookings that overlap with the requested dates
+        overlapping_bookings = self.filter(
+            room_type=room_type,
+            status__in=['confirmed', 'checked_in'],  # Only confirmed/active bookings
+            # Check for date overlap
             check_in__lt=check_out,
             check_out__gt=check_in
         ).values_list('room_id', flat=True)
         
-        return Room.objects.filter(
+        # Get all active rooms of this type that are NOT in overlapping bookings
+        available_rooms = Room.objects.filter(
             room_type=room_type,
             is_active=True
-        ).exclude(id__in=booked_room_ids)
+        ).exclude(
+            id__in=overlapping_bookings
+        )
+        
+        return available_rooms
+
+    
+    
+    
+    
+    # def get_available_rooms(self, room_type, check_in, check_out):
+    #     """Get available rooms for given dates"""
+    #     booked_room_ids = self.filter(
+    #         room__room_type=room_type,
+    #         status__in=['confirmed', 'checked_in'],
+    #         check_in__lt=check_out,
+    #         check_out__gt=check_in
+    #     ).values_list('room_id', flat=True)
+        
+    #     return Room.objects.filter(
+    #         room_type=room_type,
+    #         is_active=True
+    #     ).exclude(id__in=booked_room_ids)
 
 
 class Booking(models.Model):
