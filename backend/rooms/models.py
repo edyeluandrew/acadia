@@ -8,6 +8,8 @@ class RoomType(models.Model):
     base_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     capacity = models.PositiveIntegerField(default=1, blank=True, null=True)
     image = models.ImageField(upload_to='room_types/', blank=True, null=True, help_text="Room type image")
+
+ 
     
     def save(self, *args, **kwargs):
         if not self.slug:

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 
@@ -7,6 +8,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const navbarRef = useRef(null);
+  const location = useLocation();
 
   // Scroll effect
   useEffect(() => {
@@ -14,7 +16,7 @@ const Navbar = () => {
       const scrollTop = window.scrollY;
       setIsScrolled(scrollTop > 20);
 
-      // Update active section based on scroll position - ADD 'menu' TO SECTIONS
+      // Update active section based on scroll position
       const sections = ['home', 'services', 'about', 'menu', 'gallery', 'contact'];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
@@ -56,23 +58,12 @@ const Navbar = () => {
     );
   }, []);
 
-  // Function to handle menu click - scroll to menu section
-  const handleMenuClick = () => {
-    setIsMobileMenuOpen(false);
-    const menuSection = document.getElementById('menu');
-    if (menuSection) {
-      menuSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   const navItems = [
     { href: '#home', text: 'Home' },
     { href: '#services', text: 'Services' },
     { href: '#about', text: 'About' },
-    { 
-      href: '#menu', // Changed to href for scrolling
-      text: 'Menu'
-    },
+    { href: '#menu', text: 'Menu' },
+    { href: '/coffee', text: 'Coffee', isRoute: true },
     { href: '#gallery', text: 'Gallery' },
     { href: '#contact', text: 'Contact' }
   ];
@@ -99,78 +90,81 @@ const Navbar = () => {
                 key={item.href}
                 href={item.href}
                 text={item.text}
-                isActive={activeSection === item.href?.slice(1)}
+                isActive={item.isRoute ? location.pathname === item.href : activeSection === item.href?.slice(1)}
                 index={index}
                 isScrolled={isScrolled}
+                isRoute={item.isRoute}
               />
             ))}
           </div>
 
           {/* Centered Logo */}
-          <motion.div 
-            className="flex items-center justify-center flex-shrink-0 nav-logo mx-4"
-            whileHover={{ 
-              scale: 1.05,
-              transition: { type: "spring", stiffness: 400 }
-            }}
-          >
-            <div className="relative w-20 h-20 md:w-24 md:h-24 flex items-center justify-center">
-              <motion.div
-                className="relative w-full h-full flex items-center justify-center overflow-hidden"
-                whileHover={{
-                  scale: 1.08,
-                }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <motion.img 
-                  src="/images/logo.png"
-                  alt="Your Brand Logo"
-                  className="w-full h-full object-contain"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.3 }}
-                />
+          <Link to="/">
+            <motion.div 
+              className="flex items-center justify-center flex-shrink-0 nav-logo mx-4"
+              whileHover={{ 
+                scale: 1.05,
+                transition: { type: "spring", stiffness: 400 }
+              }}
+            >
+              <div className="relative w-20 h-20 md:w-24 md:h-24 flex items-center justify-center">
+                <motion.div
+                  className="relative w-full h-full flex items-center justify-center overflow-hidden"
+                  whileHover={{
+                    scale: 1.08,
+                  }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <motion.img 
+                    src="/images/logo.png"
+                    alt="Numba Cafe Logo"
+                    className="w-full h-full object-contain"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                  
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                    animate={{
+                      x: [-100, 300],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </motion.div>
                 
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                  className="absolute -top-2 -right-2 w-3 h-3 bg-blue-500 rounded-full shadow-lg"
                   animate={{
-                    x: [-100, 300],
+                    y: [0, -12, 0],
+                    scale: [1, 1.3, 1],
                   }}
                   transition={{
-                    duration: 3,
+                    duration: 2,
                     repeat: Infinity,
-                    repeatDelay: 5,
                     ease: "easeInOut"
                   }}
                 />
-              </motion.div>
-              
-              <motion.div
-                className="absolute -top-2 -right-2 w-3 h-3 bg-blue-500 rounded-full shadow-lg"
-                animate={{
-                  y: [0, -12, 0],
-                  scale: [1, 1.3, 1],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-              <motion.div
-                className="absolute -bottom-2 -left-2 w-2 h-2 bg-purple-500 rounded-full shadow-lg"
-                animate={{
-                  y: [0, 10, 0],
-                  scale: [1, 1.4, 1],
-                }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 0.5
-                }}
-              />
-            </div>
-          </motion.div>
+                <motion.div
+                  className="absolute -bottom-2 -left-2 w-2 h-2 bg-purple-500 rounded-full shadow-lg"
+                  animate={{
+                    y: [0, 10, 0],
+                    scale: [1, 1.4, 1],
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.5
+                  }}
+                />
+              </div>
+            </motion.div>
+          </Link>
           
           {/* Right Navigation Links */}
           <div className="hidden lg:flex items-center space-x-2 flex-1 justify-start">
@@ -179,9 +173,10 @@ const Navbar = () => {
                 key={item.href}
                 href={item.href}
                 text={item.text}
-                isActive={activeSection === item.href?.slice(1)}
+                isActive={item.isRoute ? location.pathname === item.href : activeSection === item.href?.slice(1)}
                 index={index + 3}
                 isScrolled={isScrolled}
+                isRoute={item.isRoute}
               />
             ))}
           </div>
@@ -280,30 +275,27 @@ const Navbar = () => {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
               <div className="flex flex-col p-2">
-                <div className="flex justify-center py-4">
-                  <div className="relative w-16 h-16 flex items-center justify-center">
-                    <motion.img 
-                      src="/images/logo.png"
-                      alt="Your Brand Logo"
-                      className="w-full h-full object-contain"
-                    />
+                <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
+                  <div className="flex justify-center py-4">
+                    <div className="relative w-16 h-16 flex items-center justify-center">
+                      <motion.img 
+                        src="/images/logo.png"
+                        alt="Numba Cafe Logo"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
                   </div>
-                </div>
+                </Link>
                 
                 {navItems.map((item, index) => (
                   <MobileNavButton 
                     key={item.href}
                     href={item.href}
                     text={item.text}
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      // For mobile, also handle menu click
-                      if (item.href === '#menu') {
-                        handleMenuClick();
-                      }
-                    }}
-                    isActive={activeSection === item.href?.slice(1)}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    isActive={item.isRoute ? location.pathname === item.href : activeSection === item.href?.slice(1)}
                     index={index}
+                    isRoute={item.isRoute}
                   />
                 ))}
                 <div className="p-4 mt-2">
@@ -331,27 +323,9 @@ const Navbar = () => {
 };
 
 // Desktop Navigation Button Component
-const NavButton = ({ href, text, isActive, index, isScrolled }) => {
-  return (
-    <motion.a 
-      href={href} 
-      className={`nav-item relative px-5 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition-all duration-300 group ${
-        isActive 
-          ? 'text-blue-600 bg-blue-50 scale-105' 
-          : isScrolled 
-            ? 'text-gray-700 hover:text-blue-600 hover:bg-gray-50' 
-            : 'text-white hover:text-white hover:bg-white/10'
-      }`}
-      whileHover={{ 
-        scale: 1.05,
-        y: -1,
-        transition: { type: "spring", stiffness: 400 }
-      }}
-      whileTap={{ scale: 0.95 }}
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: index * 0.1 + 0.5 }}
-    >
+const NavButton = ({ href, text, isActive, index, isScrolled, isRoute }) => {
+  const content = (
+    <>
       <span className="relative z-10 flex items-center">
         {text}
         {isActive && (
@@ -374,38 +348,98 @@ const NavButton = ({ href, text, isActive, index, isScrolled }) => {
           transition={{ duration: 0.2 }}
         />
       )}
+    </>
+  );
+
+  const className = `nav-item relative px-5 py-2.5 rounded-xl font-medium text-sm whitespace-nowrap transition-all duration-300 group ${
+    isActive 
+      ? 'text-blue-600 bg-blue-50 scale-105' 
+      : isScrolled 
+        ? 'text-gray-700 hover:text-blue-600 hover:bg-gray-50' 
+        : 'text-white hover:text-white hover:bg-white/10'
+  }`;
+
+  const motionProps = {
+    whileHover: { 
+      scale: 1.05,
+      y: -1,
+      transition: { type: "spring", stiffness: 400 }
+    },
+    whileTap: { scale: 0.95 },
+    initial: { y: -20, opacity: 0 },
+    animate: { y: 0, opacity: 1 },
+    transition: { delay: index * 0.1 + 0.5 }
+  };
+
+  if (isRoute) {
+    return (
+      <motion.div {...motionProps}>
+        <Link to={href} className={className}>
+          {content}
+        </Link>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.a 
+      href={href}
+      className={className}
+      {...motionProps}
+    >
+      {content}
     </motion.a>
   );
 };
 
 // Mobile Navigation Button Component
-const MobileNavButton = ({ href, text, isActive, onClick, index }) => {
+const MobileNavButton = ({ href, text, isActive, onClick, index, isRoute }) => {
+  const content = (
+    <span className="relative z-10 flex items-center justify-center">
+      {text}
+      {isActive && (
+        <motion.span
+          className="ml-2 w-1.5 h-1.5 bg-blue-600 rounded-full"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 500 }}
+        />
+      )}
+    </span>
+  );
+
+  const className = `relative px-6 py-4 rounded-xl font-medium text-center text-sm transition-all duration-300 ${
+    isActive 
+      ? 'bg-blue-50 text-blue-600' 
+      : 'text-gray-700 hover:bg-gray-50'
+  }`;
+
+  const motionProps = {
+    whileHover: { scale: 1.02 },
+    whileTap: { scale: 0.98 },
+    initial: { x: -50, opacity: 0 },
+    animate: { x: 0, opacity: 1 },
+    transition: { delay: index * 0.1 }
+  };
+
+  if (isRoute) {
+    return (
+      <motion.div {...motionProps}>
+        <Link to={href} onClick={onClick} className={className}>
+          {content}
+        </Link>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.a 
-      href={href} 
+      href={href}
       onClick={onClick}
-      className={`relative px-6 py-4 rounded-xl font-medium text-center text-sm transition-all duration-300 ${
-        isActive 
-          ? 'bg-blue-50 text-blue-600' 
-          : 'text-gray-700 hover:bg-gray-50'
-      }`}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      initial={{ x: -50, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ delay: index * 0.1 }}
+      className={className}
+      {...motionProps}
     >
-      <span className="relative z-10 flex items-center justify-center">
-        {text}
-        {isActive && (
-          <motion.span
-            className="ml-2 w-1.5 h-1.5 bg-blue-600 rounded-full"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 500 }}
-          />
-        )}
-      </span>
+      {content}
     </motion.a>
   );
 };

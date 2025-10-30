@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Leaf, Heart, Compass, Users, Award } from 'lucide-react';
 
+// Import your local images
+import numbaHotelImage from '../../assets/images/z.jpg';
+import acadiaLodgesImage from '../../assets/images/reception.jpg';
+
 const AboutUs = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -84,7 +88,7 @@ const AboutUs = () => {
           }`}>
             <div className="relative rounded-2xl overflow-hidden shadow-2xl h-96 bg-gradient-to-br from-espresso to-walnut p-8 flex flex-col justify-center">
               <img 
-                src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                src={numbaHotelImage}
                 alt="Numba Hotel Kabale"
                 className="w-full h-full object-cover rounded-lg"
               />
@@ -102,7 +106,7 @@ const AboutUs = () => {
           }`}>
             <div className="relative rounded-2xl overflow-hidden shadow-2xl h-96">
               <img 
-                src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                src={acadiaLodgesImage}
                 alt="Acadia Lodges Uganda"
                 className="w-full h-full object-cover"
               />
