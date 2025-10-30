@@ -100,13 +100,12 @@ Booking ID: #{booking.id}
 
 
 class CheckAvailabilityView(APIView):
-<<<<<<< HEAD
+
     """
     Check room availability for given dates
     """
-=======
-    """Check if rooms of a specific type are available for given dates"""
->>>>>>> 910bc96 (booking fix 1)
+
+
     permission_classes = [AllowAny]
     
     def post(self, request):
