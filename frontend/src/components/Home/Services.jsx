@@ -468,6 +468,33 @@ import {
 } from 'lucide-react';
 import Booking from './Booking';
 
+// Import local images
+import coffeeBar1 from '../../assets/images/,.jpg';
+import coffeeBar2 from '../../assets/images/@.jpg';
+import coffeeBar3 from '../../assets/images/a.jpg';
+import coffeeServing1 from '../../assets/images/b.jpg';
+import coffeeServing2 from '../../assets/images/ba.jpg';
+import espressoMachine1 from '../../assets/images/baa.jpg';
+import espressoMachine2 from '../../assets/images/baa.jpg';
+import baristaWorking1 from '../../assets/images/bar.jpg';
+import baristaWorking2 from '../../assets/images/c.jpg';
+import customersDrinking1 from '../../assets/images/d.jpg';
+import customersDrinking2 from '../../assets/images/dine.jpg';
+import groupCoffee1 from '../../assets/images/e.jpg';
+import groupCoffee2 from '../../assets/images/h.jpg';
+import breakfastTable1 from '../../assets/images/i.jpg';
+import breakfastTable2 from '../../assets/images/in.jpg';
+import coffeeTasting1 from '../../assets/images/inn.jpg';
+import coffeeTasting2 from '../../assets/images/j.jpg';
+import restaurantInterior1 from '../../assets/images/k.jpg';
+import restaurantInterior2 from '../../assets/images/l.jpg';
+import coffeeCup1 from '../../assets/images/m.jpg';
+import coffeeCup2 from '../../assets/images/n.jpg';
+import peopleDrinking1 from '../../assets/images/o.jpg';
+import peopleDrinking2 from '../../assets/images/p.jpg';
+import outdoorSeating1 from '../../assets/images/q.jpg';
+import outdoorSeating2 from '../../assets/images/r.jpg';
+
 const Services = () => {
   const [currentImageIndices, setCurrentImageIndices] = useState({});
   const [services, setServices] = useState([]);
@@ -478,20 +505,20 @@ const Services = () => {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedServiceId, setSelectedServiceId] = useState(null);
 
-  // Coffee marquee images
+  // Coffee marquee images using local assets
   const marqueeImages = [
-    'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&auto=format&fit=crop&q=80', // People at coffee bar
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80', // Person drinking coffee
-    'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=400&auto=format&fit=crop&q=80', // Group enjoying coffee
-    'https://images.unsplash.com/photo-1469899324414-c72bfb4d4161?w=400&auto=format&fit=crop&q=80', // Friends with coffee
-    'https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=400&auto=format&fit=crop&q=80', // Customer receiving coffee
-    'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&auto=format&fit=crop&q=80', // Server bringing coffee
-    'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&auto=format&fit=crop&q=80', // Coffee being served
-    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&auto=format&fit=crop&q=80', // People in restaurant
-    'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&auto=format&fit=crop&q=80', // Espresso machine
-    'https://images.unsplash.com/photo-1477763858572-cda7deaa9bc5?w=400&auto=format&fit=crop&q=80', // Barista working
-    'https://images.unsplash.com/photo-1561047029-3000c68339ca?w=400&auto=format&fit=crop&q=80', // Barista at machine
-    'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&auto=format&fit=crop&q=80', // Barista serving
+    coffeeCup1,
+    coffeeCup2,
+    peopleDrinking1,
+    peopleDrinking2,
+    customersDrinking1,
+    customersDrinking2,
+    outdoorSeating1,
+    outdoorSeating2,
+    groupCoffee1,
+    groupCoffee2,
+    coffeeServing1,
+    coffeeServing2
   ];
 
   // Mock coffee-focused services data
@@ -554,40 +581,40 @@ const Services = () => {
     }
   ];
 
-  // Process realistic coffee restaurant scene images from Unsplash
+  // Process local coffee restaurant scene images
   const processServiceImages = (service) => {
     const coffeeRestaurantScenes = {
       'specialty coffee': [
-        'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&auto=format&fit=crop&q=80', // Barista serving coffee to customer
-        'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&auto=format&fit=crop&q=80', // People sitting in coffee shop
-        'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&auto=format&fit=crop&q=80', // Coffee being served at table
-        'https://images.unsplash.com/photo-1477763858572-cda7deaa9bc5?w=800&auto=format&fit=crop&q=80'  // Barista working on coffee machine
+        baristaWorking1,
+        customersDrinking1,
+        coffeeServing1,
+        coffeeBar1
       ],
       'espresso bar': [
-        'https://images.unsplash.com/photo-1561047029-3000c68339ca?w=800&auto=format&fit=crop&q=80', // Barista at espresso machine
-        'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=800&auto=format&fit=crop&q=80', // People at espresso bar counter
-        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&auto=format&fit=crop&q=80', // Espresso machine in action
-        'https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=800&auto=format&fit=crop&q=80'  // Customer receiving espresso
+        espressoMachine1,
+        coffeeBar2,
+        espressoMachine2,
+        baristaWorking2
       ],
       'breakfast & pastries': [
-        'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format&fit=crop&q=80', // People enjoying breakfast in restaurant
-        'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800&auto=format&fit=crop&q=80', // Server bringing food to table
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=80', // Person with coffee and pastry
-        'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=800&auto=format&fit=crop&q=80'  // Group enjoying coffee and food
+        breakfastTable1,
+        coffeeServing2,
+        customersDrinking2,
+        breakfastTable2
       ],
       'coffee tasting': [
-        'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&auto=format&fit=crop&q=80', // Group coffee tasting session
-        'https://images.unsplash.com/photo-1542181961-9590d0c79dab?w=800&auto=format&fit=crop&q=80', // People discussing coffee
-        'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&auto=format&fit=crop&q=80', // Barista explaining coffee to group
-        'https://images.unsplash.com/photo-1469899324414-c72bfb4d4161?w=800&auto=format&fit=crop&q=80'  // Coffee tasting with friends
+        coffeeTasting1,
+        groupCoffee1,
+        coffeeTasting2,
+        groupCoffee2
       ]
     };
 
     const lowerName = service.name?.toLowerCase().trim() || '';
     return coffeeRestaurantScenes[lowerName] || [
-      'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&auto=format&fit=crop&q=80'
+      restaurantInterior1,
+      restaurantInterior2,
+      coffeeBar3
     ];
   };
 
@@ -704,10 +731,6 @@ const Services = () => {
                     src={service.images[currentIndex]}
                     alt={`${service.title} at our coffee restaurant`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    onError={(e) => {
-                      console.error('Image failed to load:', e.target.src);
-                      e.target.src = 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&auto=format&fit=crop&q=80';
-                    }}
                   />
                   
                   {/* Navigation Arrows - Always show if multiple images */}
@@ -1023,7 +1046,7 @@ const Services = () => {
             {/* Image Card */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&auto=format&fit=crop&q=80"
+                src={restaurantInterior1}
                 alt="Our beautiful coffee restaurant interior with people enjoying coffee"
                 className="w-full h-96 object-cover"
               />
