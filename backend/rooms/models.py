@@ -7,6 +7,7 @@ class RoomType(models.Model):
     describtion = models.TextField(blank=True)
     base_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     capacity = models.PositiveIntegerField(default=1, blank=True, null=True)
+    image = models.URLField(max_length=500, blank=True, null=True, help_text="Image URL for room type")
     
     def save(self, *args, **kwargs):
         if not self.slug:

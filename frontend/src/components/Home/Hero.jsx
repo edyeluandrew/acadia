@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Import your images as an array
-import image1 from "../../assets/images/a.jpg";
-import image2 from "../../assets/images/@.jpg";
-import image3 from "../../assets/images/baa.jpg";
+import image1 from "../../assets/images/k.jpg";
+import image2 from "../../assets/images/u.jpg";
+import image3 from "../../assets/images/o.jpg";
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -17,12 +17,12 @@ const Hero = () => {
     },
     {
       image: image2,
-      title: "Poached Eggs Served on toast and Avocado",
+      title: "The test of coffe from the source",
       subtitle: "Handcrafted beverages made with love"
     },
     {
       image: image3,
-      title: "Cozy Ambiance",
+      title: "Cozy ambiance of coffee",
       subtitle: "Perfect spot for work or relaxation"
     }
     // Removed the 4th slide since hero4 doesn't exist

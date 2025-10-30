@@ -1,4 +1,11 @@
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> 910bc96 (booking fix 1)
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -99,9 +106,13 @@ Booking ID: #{booking.id}
 
 
 class CheckAvailabilityView(APIView):
+<<<<<<< HEAD
     """
     Check room availability for given dates
     """
+=======
+    """Check if rooms of a specific type are available for given dates"""
+>>>>>>> 910bc96 (booking fix 1)
     permission_classes = [AllowAny]
     
     def post(self, request):
@@ -109,43 +120,54 @@ class CheckAvailabilityView(APIView):
         check_in = request.data.get('check_in')
         check_out = request.data.get('check_out')
         
+        # Validate required fields
         if not all([room_type_id, check_in, check_out]):
             return Response(
-                {'error': 'room_type_id, check_in, and check_out required'},
+                {'error': 'room_type_id, check_in, and check_out are required'},
                 status=status.HTTP_400_BAD_REQUEST
             )
         
         try:
+            # Get room type
             room_type = RoomType.objects.get(id=room_type_id)
+            
+            # Parse dates
             check_in_date = datetime.strptime(check_in, '%Y-%m-%d').date()
             check_out_date = datetime.strptime(check_out, '%Y-%m-%d').date()
             
             # Validate dates
             if check_out_date <= check_in_date:
                 return Response(
-                    {'error': 'Check-out must be after check-in'},
+                    {'error': 'Check-out date must be after check-in date'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
             
-            # Get available rooms
-            available = Booking.objects.get_available_rooms(
+            # Get available rooms for this room type
+            available_rooms = Booking.objects.get_available_rooms(
                 room_type, check_in_date, check_out_date
             )
             
+            # Calculate pricing
             nights = (check_out_date - check_in_date).days
             total_price = room_type.base_price * nights
             
+            # Return availability info
             return Response({
-                'available': available.exists(),
-                'available_count': available.count(),
+                'available': available_rooms.exists(),
+                'available_count': available_rooms.count(),
                 'room_type': room_type.name,
                 'room_type_id': room_type.id,
                 'nights': nights,
                 'total_price': str(total_price),
                 'price_per_night': str(room_type.base_price),
+<<<<<<< HEAD
                 'check_in': check_in_date.strftime('%Y-%m-%d'),
                 'check_out': check_out_date.strftime('%Y-%m-%d'),
                 
+=======
+                'check_in': check_in,
+                'check_out': check_out
+>>>>>>> 910bc96 (booking fix 1)
             })
             
         except RoomType.DoesNotExist:
@@ -153,10 +175,15 @@ class CheckAvailabilityView(APIView):
                 {'error': 'Room type not found'},
                 status=status.HTTP_404_NOT_FOUND
             )
-        except ValueError:
+        except ValueError as e:
             return Response(
-                {'error': 'Invalid date format. Use YYYY-MM-DD'},
+                {'error': f'Invalid date format. Use YYYY-MM-DD. Error: {str(e)}'},
                 status=status.HTTP_400_BAD_REQUEST
+            )
+        except Exception as e:
+            return Response(
+                {'error': f'An error occurred: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
 
